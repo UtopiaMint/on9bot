@@ -14,7 +14,7 @@ SPECIAL_GROUP_ID: int = -1001295361187  # Special group chat id
 HEROKU_APP_NAME: str = "on9bot"  # Heroku app name
 
 #                              C A N  U S E  F O R E V E R
-CAN_USE_TAG9: Iterable[int] = (OWNER_ID, 190726372, 106665913, 537248339, 540933895, 401742123)
+CAN_USE_TAG9: Iterable[int] = (OWNER_ID, 190726372, 106665913, 537248339, 540933895, 401742123, 389061708)
 
 # Do not modify these
 nubbot: Bot = Bot(BOT_TOKEN)
