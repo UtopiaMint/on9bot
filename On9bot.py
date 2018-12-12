@@ -77,6 +77,44 @@ def tag9js(bot: Bot, update: Update) -> None:
             "Join HK Duker", url="https://t.me/hkduker")]])
         msg.reply_text("This command can only be used in HK Duker.", reply_markup=reply_markup)
 
+@run_async
+def tag9mint(bot: Bot, update: Update) -> None:
+    msg = update.effective_message
+    chat = msg.chat
+    if chat.id == SPECIAL_GROUP.id or (msg.from_user.id == OWNER.id and msg.chat.type in (Chat.GROUP, Chat.SUPERGROUP)):
+        chat.send_action(ChatAction.TYPING)
+        try:
+            js_info = chat.get_member(389061708)
+            assert js_info.status in (ChatMember.CREATOR, ChatMember.ADMINISTRATOR, ChatMember.MEMBER)
+        except (TelegramError, AssertionError):
+            msg.reply_text("no u, he is not in this group")
+            return
+        if js_info.user.username:
+            username = "@" + js_info.user.username
+            try:
+                text = msg.text.split(maxsplit=1)[1]
+                if "@" in text or text.startswith(("/", ".", "#", "!", "?")):
+                    raise IndexError
+                assert "{username}" in text
+                text = text.replace("{username}", username)
+            except IndexError:
+                text = username
+            except AssertionError:
+                text = f"{msg.text.split(maxsplit=1)[1]} {username}"
+            sent = msg.reply_text("15 sec, tag tag tag. Use /remove_keyboard to remove the reply keyboard.",
+                                  reply_markup=ReplyKeyboardMarkup([[text]]), quote=True)
+            sleep(15)
+            del_msg(sent)
+            msg.reply_text("Tag9js over, removed reply keyboard and deleted message if no one did so...",
+                           reply_markup=ReplyKeyboardRemove(), quote=False)
+        else:
+            msg.reply_text("no u, JS removed username.")
+    elif chat.id < 0:
+        msg.reply_text("no u")
+    else:
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton(
+            "Join HK Duker", url="https://t.me/hkduker")]])
+        msg.reply_text("This command can only be used in HK Duker.", reply_markup=reply_markup)
 
 def tag9(bot: Bot, update: Update, args: List[str]) -> None:
     msg = update.effective_message
